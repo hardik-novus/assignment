@@ -8,6 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class AuditLogJob implements ShouldQueue
 {
@@ -50,5 +51,10 @@ class AuditLogJob implements ShouldQueue
         $auditLog->response_body = $this->response_body;
         $auditLog->response_status_code = $this->response_status_code;
         $auditLog->save();
+    }
+
+    public function fail($exception = null)
+    {
+        Log::critical('Failed to save audit log', $exception);
     }
 }
